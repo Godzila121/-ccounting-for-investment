@@ -48,16 +48,36 @@ public class ProjectEditController {
         return project;
     }
 
+    public void setProject(InvestmentProject project) {
+        this.project = project;
+
+        if (project != null) {
+            idField.setText(project.getId());
+            nameField.setText(project.getName());
+            descriptionArea.setText(project.getDescription());
+            investmentField.setText(Double.toString(project.getInitialInvestment()));
+            statusComboBox.setValue(project.getStatus());
+        }
+    }
+
     @FXML
     private void handleSave() {
         if (isInputValid()) {
-            project = new InvestmentProject(
-                    idField.getText(),
-                    nameField.getText(),
-                    descriptionArea.getText(),
-                    Double.parseDouble(investmentField.getText()),
-                    statusComboBox.getValue()
-            );
+            if (project == null) {
+                project = new InvestmentProject(
+                        idField.getText(),
+                        nameField.getText(),
+                        descriptionArea.getText(),
+                        Double.parseDouble(investmentField.getText()),
+                        statusComboBox.getValue()
+                );
+            } else {
+                project.setId(idField.getText());
+                project.setName(nameField.getText());
+                project.setDescription(descriptionArea.getText());
+                project.setInitialInvestment(Double.parseDouble(investmentField.getText()));
+                project.setStatus(statusComboBox.getValue());
+            }
 
             saveClicked = true;
             dialogStage.close();

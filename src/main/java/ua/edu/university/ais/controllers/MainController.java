@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
@@ -17,7 +18,6 @@ import ua.edu.university.ais.models.InvestmentProject;
 
 import java.io.IOException;
 import java.util.Optional;
-import javafx.scene.control.ButtonType;
 
 public class MainController {
 
@@ -73,15 +73,14 @@ public class MainController {
         projectData.add(new InvestmentProject("P-003", "IT-інфраструктура", "Оновлення серверів", 750000, "Завершено"));
     }
 
-    @FXML
-    private void handleAddNewProject() {
+    private ProjectEditController showProjectEditDialog(InvestmentProject project, String title) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(App.class.getResource("views/project-edit-view.fxml"));
             AnchorPane page = loader.load();
 
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Новий проєкт");
+            dialogStage.setTitle(title);
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
@@ -89,15 +88,23 @@ public class MainController {
 
             ProjectEditController controller = loader.getController();
             controller.setDialogStage(dialogStage);
+            controller.setProject(project);
 
             dialogStage.showAndWait();
 
-            if (controller.isSaveClicked()) {
-                projectData.add(controller.getProject());
-            }
-
+            return controller;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
+        }
+    }
+
+    @FXML
+    private void handleAddNewProject() {
+        ProjectEditController controller = showProjectEditDialog(null, "Новий проєкт");
+
+        if (controller != null && controller.isSaveClicked()) {
+            projectData.add(controller.getProject());
         }
     }
 
@@ -109,8 +116,11 @@ public class MainController {
             return;
         }
 
-        // Логіка редагування буде додана тут на наступному кроці
-        showAlert("В розробці", "Функціонал редагування буде додано.", Alert.AlertType.INFORMATION);
+        ProjectEditController controller = showProjectEditDialog(selectedProject, "Редагування проєкту");
+
+        if (controller != null && controller.isSaveClicked()) {
+            projectsTable.refresh();
+        }
     }
 
     @FXML
