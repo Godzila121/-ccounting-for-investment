@@ -45,8 +45,8 @@
 
         <HBox layoutX="260.0" layoutY="350.0" spacing="10.0" AnchorPane.BottomAnchor="20.0" AnchorPane.RightAnchor="20.0">
             <children>
-                <Button fx:id="saveButton" mnemonicParsing="false" text="Зберегти" />
-                <Button fx:id="cancelButton" mnemonicParsing="false" text="Скасувати" />
+                <Button fx:id="saveButton" mnemonicParsing="false" text="Зберегти" onAction="#handleSave" />
+                <Button fx:id="cancelButton" mnemonicParsing="false" text="Скасувати" onAction="#handleCancel" />
             </children>
         </HBox>
     </children>
