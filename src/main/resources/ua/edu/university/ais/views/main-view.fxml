@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ua.edu.university.ais.controllers.MainController">
+    <center>
+        <VBox alignment="CENTER" spacing="20.0">
+            <Label text="Вітаємо в АІС 'Облік прогнозування інвестиційних програм'"/>
+            <Label text="Це головне вікно."/>
+        </VBox>
+    </center>
+</BorderPane>
