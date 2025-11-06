@@ -46,11 +46,12 @@
     </center>
 
     <right>
-        <VBox alignment="TOP_CENTER" spacing="10.0" prefWidth="130.0">
+        <VBox alignment="TOP_CENTER" spacing="10.0" prefWidth="150.0">
             <padding>
                 <Insets top="10.0" right="10.0" bottom="10.0" left="10.0"/>
             </padding>
             <children>
+                <Button fx:id="detailsButton" text="Деталі / Розрахунок" maxWidth="Infinity" onAction="#handleShowDetails"/>
                 <Button fx:id="editButton" text="Редагувати..." maxWidth="Infinity" onAction="#handleEditProject"/>
                 <Button fx:id="deleteButton" text="Видалити" maxWidth="Infinity" onAction="#handleDeleteProject"/>
             </children>

@@ -11,12 +11,19 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ua.edu.university.ais.App;
 import ua.edu.university.ais.models.InvestmentProject;
+import ua.edu.university.ais.util.DatabaseHandler;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Optional;
 
 public class MainController {
@@ -33,6 +40,8 @@ public class MainController {
     private TableColumn<InvestmentProject, Number> colInvestment;
 
     @FXML
+    private Button detailsButton;
+    @FXML
     private Button editButton;
     @FXML
     private Button deleteButton;
@@ -47,18 +56,20 @@ public class MainController {
         colStatus.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
         colInvestment.setCellValueFactory(cellData -> cellData.getValue().initialInvestmentProperty());
 
+        detailsButton.setDisable(true);
         editButton.setDisable(true);
         deleteButton.setDisable(true);
 
         projectsTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> showProjectButtons(newValue));
 
-        loadTestData();
         projectsTable.setItems(projectData);
+        loadProjectsFromDatabase();
     }
 
     private void showProjectButtons(InvestmentProject project) {
         boolean projectSelected = project != null;
+        detailsButton.setDisable(!projectSelected);
         editButton.setDisable(!projectSelected);
         deleteButton.setDisable(!projectSelected);
     }
@@ -67,10 +78,27 @@ public class MainController {
         this.primaryStage = primaryStage;
     }
 
-    private void loadTestData() {
-        projectData.add(new InvestmentProject("P-001", "Модернізація лінії А", "Оновлення обладнання", 1500000, "Планується"));
-        projectData.add(new InvestmentProject("P-002", "Запуск нового продукту", "Виведення на ринок", 4500000, "Виконується"));
-        projectData.add(new InvestmentProject("P-003", "IT-інфраструктура", "Оновлення серверів", 750000, "Завершено"));
+    private void loadProjectsFromDatabase() {
+        projectData.clear();
+        String sql = "SELECT * FROM projects";
+
+        try (Connection conn = DatabaseHandler.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                projectData.add(new InvestmentProject(
+                        rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getDouble("initial_investment"),
+                        rs.getString("status")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Помилка Бази Даних", "Не вдалося завантажити проєкти.", Alert.AlertType.ERROR);
+        }
     }
 
     private ProjectEditController showProjectEditDialog(InvestmentProject project, String title) {
@@ -104,7 +132,25 @@ public class MainController {
         ProjectEditController controller = showProjectEditDialog(null, "Новий проєкт");
 
         if (controller != null && controller.isSaveClicked()) {
-            projectData.add(controller.getProject());
+            InvestmentProject newProject = controller.getProject();
+            String sql = "INSERT INTO projects(id, name, description, initial_investment, status) VALUES(?,?,?,?,?)";
+
+            try (Connection conn = DatabaseHandler.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setString(1, newProject.getId());
+                pstmt.setString(2, newProject.getName());
+                pstmt.setString(3, newProject.getDescription());
+                pstmt.setDouble(4, newProject.getInitialInvestment());
+                pstmt.setString(5, newProject.getStatus());
+                pstmt.executeUpdate();
+
+                projectData.add(newProject);
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                showAlert("Помилка Бази Даних", "Не вдалося додати проєкт.", Alert.AlertType.ERROR);
+            }
         }
     }
 
@@ -119,7 +165,24 @@ public class MainController {
         ProjectEditController controller = showProjectEditDialog(selectedProject, "Редагування проєкту");
 
         if (controller != null && controller.isSaveClicked()) {
-            projectsTable.refresh();
+            String sql = "UPDATE projects SET name = ?, description = ?, initial_investment = ?, status = ? WHERE id = ?";
+
+            try (Connection conn = DatabaseHandler.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setString(1, selectedProject.getName());
+                pstmt.setString(2, selectedProject.getDescription());
+                pstmt.setDouble(3, selectedProject.getInitialInvestment());
+                pstmt.setString(4, selectedProject.getStatus());
+                pstmt.setString(5, selectedProject.getId());
+                pstmt.executeUpdate();
+
+                projectsTable.refresh();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                showAlert("Помилка Бази Даних", "Не вдалося оновити проєкт.", Alert.AlertType.ERROR);
+            }
         }
     }
 
@@ -135,10 +198,54 @@ public class MainController {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                projectData.remove(selectedProject);
+                String sql = "DELETE FROM projects WHERE id = ?";
+
+                try (Connection conn = DatabaseHandler.getConnection();
+                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                    pstmt.setString(1, selectedProject.getId());
+                    pstmt.executeUpdate();
+
+                    projectData.remove(selectedProject);
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    showAlert("Помилка Бази Даних", "Не вдалося видалити проєкт.", Alert.AlertType.ERROR);
+                }
             }
         } else {
             showAlert("Нічого не вибрано", "Будь ласка, виберіть проєкт у таблиці.", Alert.AlertType.WARNING);
+        }
+    }
+
+    @FXML
+    private void handleShowDetails() {
+        InvestmentProject selectedProject = projectsTable.getSelectionModel().getSelectedItem();
+        if (selectedProject == null) {
+            showAlert("Нічого не вибрано", "Будь ласка, виберіть проєкт у таблиці.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(App.class.getResource("views/project-details-view.fxml"));
+            BorderPane page = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Деталі проєкту: " + selectedProject.getName());
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            ProjectDetailsController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setProject(selectedProject);
+
+            dialogStage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
