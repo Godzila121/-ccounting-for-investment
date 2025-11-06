@@ -45,9 +45,16 @@ public class MainController {
     private Button editButton;
     @FXML
     private Button deleteButton;
+    @FXML
+    private Button logoutButton;
 
     private final ObservableList<InvestmentProject> projectData = FXCollections.observableArrayList();
     private Stage primaryStage;
+    private App app;
+
+    public void setApp(App app) {
+        this.app = app;
+    }
 
     @FXML
     public void initialize() {
@@ -247,6 +254,11 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void handleLogout() {
+        app.showLoginScreen();
     }
 
     private void showAlert(String title, String content, Alert.AlertType type) {

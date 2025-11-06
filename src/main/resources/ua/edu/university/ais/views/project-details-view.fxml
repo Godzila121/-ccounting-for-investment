@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.RowConstraints?>
 
 <BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.edu.university.ais.controllers.ProjectDetailsController">
     <top>
@@ -33,7 +39,19 @@
                             </HBox.margin>
                         </Label>
                         <TextField fx:id="discountRateField" prefWidth="80.0" text="10.0" />
-                        <Button fx:id="calculateButton" mnemonicParsing="false" text="Розрахувати" onAction="#handleCalculate" />
+                    </children>
+                    <padding>
+                        <Insets bottom="5.0" left="10.0" />
+                    </padding>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <children>
+                        <Label text="Сценарій:" />
+                        <ComboBox fx:id="scenarioComboBox" prefWidth="200.0" />
+                        <Button fx:id="newScenarioButton" mnemonicParsing="false" text="+ Новий" onAction="#handleNewScenario" />
+                        <Button fx:id="editScenarioButton" mnemonicParsing="false" text="Редагувати" onAction="#handleEditScenario" />
+                        <Button fx:id="deleteScenarioButton" mnemonicParsing="false" text="- Видалити" onAction="#handleDeleteScenario" />
+                        <Button fx:id="calculateButton" mnemonicParsing="false" text="Розрахувати" onAction="#handleCalculate" style="-fx-font-weight: bold;" />
                     </children>
                     <padding>
                         <Insets bottom="10.0" left="10.0" />
@@ -45,44 +63,68 @@
     <center>
         <SplitPane dividerPositions="0.65" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                    <children>
-                        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <children>
-                                <Label text="Грошові потоки (Cash Flow)">
-                                    <font>
-                                        <Font name="System Bold" size="14.0" />
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets bottom="5.0" left="5.0" top="5.0" />
-                                    </VBox.margin>
-                                </Label>
-                                <TableView fx:id="cashFlowTable" prefHeight="350.0" VBox.vgrow="ALWAYS">
-                                    <columns>
-                                        <TableColumn fx:id="colYear" prefWidth="75.0" text="Рік" />
-                                        <TableColumn fx:id="colAmount" prefWidth="150.0" text="Сума" />
-                                        <TableColumn fx:id="colType" prefWidth="150.0" text="Тип" />
-                                    </columns>
-                                </TableView>
-                                <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                    <padding>
-                                        <Insets bottom="10.0" left="10.0" top="10.0" />
-                                    </padding>
+                <TabPane tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                        <Tab text="Таблиця потоків">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                     <children>
-                                        <Label text="Рік:" />
-                                        <TextField fx:id="yearField" prefWidth="60.0" />
-                                        <Label text="Сума:" />
-                                        <TextField fx:id="amountField" prefWidth="100.0" />
-                                        <Label text="Тип:" />
-                                        <TextField fx:id="typeField" prefWidth="100.0" text="Дохід" />
-                                        <Button fx:id="addButton" mnemonicParsing="false" text="Додати потік" onAction="#handleAddNewFlow" />
-                                        <Button fx:id="deleteButton" mnemonicParsing="false" text="Видалити" onAction="#handleDeleteFlow" />
+                                        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <children>
+                                                <Label text="Грошові потоки (Cash Flow)">
+                                                    <font>
+                                                        <Font name="System Bold" size="14.0" />
+                                                    </font>
+                                                    <VBox.margin>
+                                                        <Insets bottom="5.0" left="5.0" top="5.0" />
+                                                    </VBox.margin>
+                                                </Label>
+                                                <TableView fx:id="cashFlowTable" prefHeight="350.0" VBox.vgrow="ALWAYS">
+                                                    <columns>
+                                                        <TableColumn fx:id="colYear" prefWidth="75.0" text="Рік" />
+                                                        <TableColumn fx:id="colAmount" prefWidth="150.0" text="Сума" />
+                                                        <TableColumn fx:id="colType" prefWidth="150.0" text="Тип" />
+                                                    </columns>
+                                                </TableView>
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                    <padding>
+                                                        <Insets bottom="10.0" left="10.0" top="10.0" />
+                                                    </padding>
+                                                    <children>
+                                                        <Label text="Рік:" />
+                                                        <TextField fx:id="yearField" prefWidth="60.0" />
+                                                        <Label text="Сума:" />
+                                                        <TextField fx:id="amountField" prefWidth="100.0" />
+                                                        <Label text="Тип:" />
+                                                        <TextField fx:id="typeField" prefWidth="100.0" text="Дохід" />
+                                                        <Button fx:id="addButton" mnemonicParsing="false" text="Додати потік" onAction="#handleAddNewFlow" />
+                                                        <Button fx:id="deleteButton" mnemonicParsing="false" text="Видалити" onAction="#handleDeleteFlow" />
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
                                     </children>
-                                </HBox>
-                            </children>
-                        </VBox>
-                    </children>
-                </AnchorPane>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                        <Tab text="Графік потоків">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0">
+                                    <children>
+                                        <BarChart fx:id="cashFlowChart" title="Діаграма грошових потоків" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                            <xAxis>
+                                                <CategoryAxis fx:id="chartXAxis" label="Рік" />
+                                            </xAxis>
+                                            <yAxis>
+                                                <NumberAxis fx:id="chartYAxis" label="Сума" />
+                                            </yAxis>
+                                        </BarChart>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                    </tabs>
+                </TabPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                     <children>
                         <VBox layoutX="14.0" layoutY="14.0" spacing="15.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
@@ -105,16 +147,13 @@
                                     </rowConstraints>
                                     <children>
                                         <Label text="NPV:" />
-                                        <Label fx:id="npvLabel" text="-" GridPane.columnIndex="1" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
-
+                                        <Label fx:id="npvLabel" text="-" GridPane.columnIndex="1" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
                                         <Label text="IRR:" GridPane.rowIndex="1" />
-                                        <Label fx:id="irrLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
-
+                                        <Label fx:id="irrLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
                                         <Label text="Термін окуп. (PP):" GridPane.rowIndex="2" />
-                                        <Label fx:id="ppLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
-
+                                        <Label fx:id="ppLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
                                         <Label text="Дисконт. (DPP):" GridPane.rowIndex="3" />
-                                        <Label fx:id="dppLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
+                                        <Label fx:id="dppLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
                                     </children>
                                 </GridPane>
                             </children>

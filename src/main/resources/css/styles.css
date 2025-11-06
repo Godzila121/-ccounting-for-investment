@@ -1,0 +1,40 @@
+.button {
+    -fx-background-color: #0078D4;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+}
+
+.button:hover {
+    -fx-background-color: #005A9E;
+}
+
+#deleteButton, #deleteScenarioButton {
+    -fx-background-color: #D83B01;
+}
+#deleteButton:hover, #deleteScenarioButton:hover {
+    -fx-background-color: #A22C00;
+}
+
+#calculateButton {
+    -fx-background-color: #107C10;
+}
+#calculateButton:hover {
+    -fx-background-color: #0B5A0B;
+}
+
+.menu-bar {
+    -fx-background-color: #F3F3F3;
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 0 0 1 0;
+}
+
+#projectNameLabel {
+    -fx-font-size: 20px;
+    -fx-text-fill: #005A9E;
+    -fx-font-weight: bold;
+}
+
+.chart-bar {
+    -fx-bar-fill: #107C10;
+}
