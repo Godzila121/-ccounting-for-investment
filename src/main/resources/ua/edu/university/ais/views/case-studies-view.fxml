@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.edu.university.ais.controllers.CaseStudyController">
+    <center>
+        <SplitPane dividerPositions="0.35" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                    <children>
+                        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <children>
+                                <Label text="Список прикладів">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets bottom="5.0" left="5.0" top="5.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <ListView fx:id="caseListView" VBox.vgrow="ALWAYS" />
+                                <HBox alignment="CENTER" spacing="10.0">
+                                    <padding>
+                                        <Insets bottom="10.0" left="10.0" top="10.0" />
+                                    </padding>
+                                    <children>
+                                        <Button fx:id="newButton" mnemonicParsing="false" text="+ Новий" onAction="#handleNewCase" />
+                                        <Button fx:id="editButton" mnemonicParsing="false" text="Редагувати" onAction="#handleEditCase" />
+                                        <Button fx:id="deleteButton" mnemonicParsing="false" text="- Видалити" onAction="#handleDeleteCase" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                    <children>
+                        <VBox spacing="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                            <children>
+                                <Label text="Назва прикладу:">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="titleLabel" text="-" style="-fx-font-size: 16px;" />
+                                <Label text="Результат:">
+                                    <VBox.margin>
+                                        <Insets top="10.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label fx:id="outcomeLabel" text="-" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+                                <Label text="Опис ситуації:">
+                                    <VBox.margin>
+                                        <Insets top="10.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <TextArea fx:id="descriptionArea" editable="false" prefHeight="150.0" wrapText="true" VBox.vgrow="ALWAYS" />
+                                <Label text="Вивчені уроки (Висновки):">
+                                    <VBox.margin>
+                                        <Insets top="10.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <TextArea fx:id="lessonsLearnedArea" editable="false" prefHeight="100.0" wrapText="true" VBox.vgrow="ALWAYS" />
+                            </children>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </center>
+</BorderPane>

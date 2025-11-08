@@ -10,8 +10,8 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -65,46 +65,27 @@
             <items>
                 <TabPane tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                        <Tab text="Таблиця потоків">
+                        <Tab text="Сітка прогнозування (Драйвери)">
                             <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                <VBox>
                                     <children>
-                                        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                            <padding>
+                                                <Insets bottom="10.0" left="10.0" top="10.0" />
+                                            </padding>
                                             <children>
-                                                <Label text="Грошові потоки (Cash Flow)">
-                                                    <font>
-                                                        <Font name="System Bold" size="14.0" />
-                                                    </font>
-                                                    <VBox.margin>
-                                                        <Insets bottom="5.0" left="5.0" top="5.0" />
-                                                    </VBox.margin>
-                                                </Label>
-                                                <TableView fx:id="cashFlowTable" prefHeight="350.0" VBox.vgrow="ALWAYS">
-                                                    <columns>
-                                                        <TableColumn fx:id="colYear" prefWidth="75.0" text="Рік" />
-                                                        <TableColumn fx:id="colAmount" prefWidth="150.0" text="Сума" />
-                                                        <TableColumn fx:id="colType" prefWidth="150.0" text="Тип" />
-                                                    </columns>
-                                                </TableView>
-                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                                    <padding>
-                                                        <Insets bottom="10.0" left="10.0" top="10.0" />
-                                                    </padding>
-                                                    <children>
-                                                        <Label text="Рік:" />
-                                                        <TextField fx:id="yearField" prefWidth="60.0" />
-                                                        <Label text="Сума:" />
-                                                        <TextField fx:id="amountField" prefWidth="100.0" />
-                                                        <Label text="Тип:" />
-                                                        <TextField fx:id="typeField" prefWidth="100.0" text="Дохід" />
-                                                        <Button fx:id="addButton" mnemonicParsing="false" text="Додати потік" onAction="#handleAddNewFlow" />
-                                                        <Button fx:id="deleteButton" mnemonicParsing="false" text="Видалити" onAction="#handleDeleteFlow" />
-                                                    </children>
-                                                </HBox>
+                                                <Label text="Керування моделлю:" />
+                                                <Button fx:id="addDriverButton" mnemonicParsing="false" text="+ Додати Драйвер" onAction="#handleAddDriver" />
+                                                <Button fx:id="addYearButton" mnemonicParsing="false" text="+ Додати Рік" onAction="#handleAddYear" />
                                             </children>
-                                        </VBox>
+                                        </HBox>
+                                        <TableView fx:id="driverTableView" editable="true" prefHeight="400.0" VBox.vgrow="ALWAYS">
+                                            <placeholder>
+                                                <Label text="Додайте драйвери (напр., 'Кількість продажів') та роки." />
+                                            </placeholder>
+                                        </TableView>
                                     </children>
-                                </AnchorPane>
+                                </VBox>
                             </content>
                         </Tab>
                         <Tab text="Графік потоків">
@@ -127,7 +108,7 @@
                 </TabPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                     <children>
-                        <VBox layoutX="14.0" layoutY="14.0" spacing="15.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                        <VBox spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                             <children>
                                 <Label text="Розрахункові показники">
                                     <font>
@@ -156,6 +137,12 @@
                                         <Label fx:id="dppLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
                                     </children>
                                 </GridPane>
+                                <Label text="Опис проєкту:">
+                                    <VBox.margin>
+                                        <Insets top="10.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <TextArea fx:id="projectDescriptionArea" editable="false" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                             </children>
                         </VBox>
                     </children>

@@ -1,8 +1,6 @@
 package ua.edu.university.ais.models;
 
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -12,15 +10,12 @@ public class Scenario {
     private final IntegerProperty scenarioId;
     private final StringProperty projectId;
     private final StringProperty scenarioName;
-    private final DoubleProperty incomeModifier;
-    private final DoubleProperty costModifier;
+    // Поля incomeModifier та costModifier видалено
 
-    public Scenario(int scenarioId, String projectId, String scenarioName, double incomeModifier, double costModifier) {
+    public Scenario(int scenarioId, String projectId, String scenarioName) {
         this.scenarioId = new SimpleIntegerProperty(scenarioId);
         this.projectId = new SimpleStringProperty(projectId);
         this.scenarioName = new SimpleStringProperty(scenarioName);
-        this.incomeModifier = new SimpleDoubleProperty(incomeModifier);
-        this.costModifier = new SimpleDoubleProperty(costModifier);
     }
 
     public int getScenarioId() {
@@ -51,29 +46,7 @@ public class Scenario {
         this.scenarioName.set(scenarioName);
     }
 
-    public double getIncomeModifier() {
-        return incomeModifier.get();
-    }
-
-    public DoubleProperty incomeModifierProperty() {
-        return incomeModifier;
-    }
-
-    public void setIncomeModifier(double incomeModifier) {
-        this.incomeModifier.set(incomeModifier);
-    }
-
-    public double getCostModifier() {
-        return costModifier.get();
-    }
-
-    public DoubleProperty costModifierProperty() {
-        return costModifier;
-    }
-
-    public void setCostModifier(double costModifier) {
-        this.costModifier.set(costModifier);
-    }
+    // Геттери та сеттери для incomeModifier/costModifier видалено
 
     @Override
     public String toString() {

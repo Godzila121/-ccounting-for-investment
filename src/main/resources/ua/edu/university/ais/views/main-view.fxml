@@ -9,27 +9,58 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="ua.edu.university.ais.controllers.MainController">
     <top>
-        <MenuBar>
-            <menus>
-                <Menu text="Файл">
-                    <items>
-                        <MenuItem text="Закрити"/>
-                    </items>
-                </Menu>
-                <Menu text="Проєкти">
-                    <items>
-                        <MenuItem text="Додати новий..." onAction="#handleAddNewProject"/>
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
+        <VBox>
+            <children>
+                <MenuBar>
+                    <menus>
+                        <Menu text="Файл">
+                            <items>
+                                <MenuItem text="Закрити"/>
+                            </items>
+                        </Menu>
+                        <Menu text="Проєкти">
+                            <items>
+                                <MenuItem text="Додати новий..." onAction="#handleAddNewProject"/>
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+
+                <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="header">
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" top="10.0" />
+                    </padding>
+                    <children>
+                        <Label text="Інвестиційний Фонд:">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <VBox>
+                            <children>
+                                <Label text="Загальний бюджет:" />
+                                <Label fx:id="totalBudgetLabel" text="-" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+                            </children>
+                        </VBox>
+                        <VBox>
+                            <children>
+                                <Label text="Вільний залишок:" />
+                                <Label fx:id="currentBudgetLabel" text="-" style="-fx-font-weight: bold; -fx-font-size: 14px;" styleClass="text-success" />
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
     </top>
 
     <center>
@@ -55,6 +86,10 @@
                 <Button fx:id="detailsButton" text="Деталі / Розрахунок" maxWidth="Infinity" onAction="#handleShowDetails"/>
                 <Button fx:id="editButton" text="Редагувати..." maxWidth="Infinity" onAction="#handleEditProject"/>
                 <Button fx:id="deleteButton" text="Видалити" maxWidth="Infinity" onAction="#handleDeleteProject"/>
+
+                <Button fx:id="caseStudiesButton" text="База знань" maxWidth="Infinity" onAction="#handleShowCaseStudies" />
+
+                <Button fx:id="reportButton" text="Звіт по портфелю" maxWidth="Infinity" onAction="#handleShowReport" />
 
                 <Region VBox.vgrow="ALWAYS" />
 
